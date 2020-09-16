@@ -23,6 +23,8 @@ import com.example.demo.Entity.User;
 import com.example.demo.Repository.FileDocumentRepository;
 import com.example.demo.dto.FileUploadResponse;
 
+// instead use one controller for file upload download and viewing files this is vestigal
+
 @RestController
 public class ViewFilesController {
 	@Autowired

@@ -46,7 +46,7 @@ public class UserController {
 		return "login successful";
 		
 	}
-	
+	// add should only be admin privilege this is strictly for testing purpose
 	@PostMapping ("/add")
 	public String addUser(@RequestBody User user) {
 		String password = user.getPassword();

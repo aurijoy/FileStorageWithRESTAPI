@@ -25,6 +25,8 @@ import lombok.ToString;
  * 								   only be created if User_Id is present as an argument in Constructor 
  * 								   call.
 */
+
+// Try to decouple user from here
 @ToString
 @Getter
 @Setter
