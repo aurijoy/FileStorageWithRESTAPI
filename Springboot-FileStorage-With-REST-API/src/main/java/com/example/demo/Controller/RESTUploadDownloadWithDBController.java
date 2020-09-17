@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +30,11 @@ import com.example.demo.Entity.FileDocument;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.FileDocumentRepository;
 import com.example.demo.Repository.UserRepository;
+import com.example.demo.Service.CustomUserDetails;
 import com.example.demo.dto.FileUploadResponse;
 
 @RestController
-public class UploadDownloadWithDBController {
+public class RESTUploadDownloadWithDBController {
 
 	@Autowired
 	private FileDocumentRepository fileRepository;
@@ -40,18 +42,24 @@ public class UploadDownloadWithDBController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public UploadDownloadWithDBController(FileDocumentRepository fileRepository){
+	public RESTUploadDownloadWithDBController(FileDocumentRepository fileRepository){
 		this.fileRepository = fileRepository;
 			
 	}
 	
+	
+// Post mapping for uploading file using REST itself
 	@PostMapping("/upload") 
-	FileUploadResponse singleFileUplaod(@RequestParam("file") MultipartFile file) throws IOException {
+	FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam ("username") String usersuppliedusername) throws IOException {
 
+		// Building the fileDocument to be Stored
         String name = StringUtils.cleanPath(file.getOriginalFilename());
         FileDocument fileDocument = new FileDocument();
         fileDocument.setFileName(name);
         fileDocument.setDocFile(file.getBytes());
+        
+// This is the first attempt at constraining the method of obtaining the username from the 
+// the securityContextHolder we have abandoned this method in favor of a simpler one.
 //        String userName;
 //        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        if (principal instanceof UserDetails) {
@@ -60,24 +68,39 @@ public class UploadDownloadWithDBController {
 //           userName = principal.toString();
 //        }
 //        User user = userRepository.findByUserName(userName);
+//        fileDocument.setUser(user);
         
-        fileRepository.save(fileDocument);
         
         
+  //      String username="defaultusername";   // hardcoding the username for training purpose only
+      
+        String username= usersuppliedusername;  // getting username from Post request itself
+        fileDocument.setUsername(username);		// finally preparing fileDocument
+        
+        
+        
+        fileRepository.save(fileDocument);		// Pushing to Database
+        
+     // Getting the file url from database itself  
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")						// return it from the Database itself
+                .path("/download/")						
                 .path(name)
                 .toUriString();
         
         String contentType = file.getContentType();
         
+        
+        // FileUploadResponse is a DTO designed for this purpose
         FileUploadResponse response = new FileUploadResponse (name, contentType, url);
         
         return response;
         
 	}
+///////////////////////////////////////////////////////
+	// Handling Downloading of File
+///////////////////////////////////////////////////////
 	
-	
+	// Get mapping for downloading file using REST itself
 	 @GetMapping("/download/{fileName}")
 	    ResponseEntity<byte[]> downLoadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
 
@@ -87,13 +110,21 @@ public class UploadDownloadWithDBController {
 
 	        return ResponseEntity.ok()
 	                .contentType(MediaType.parseMediaType(mimeType))
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName="+ doc.getFileName())
-	//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + doc.getFileName())
-	//                .body(null);
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName="+ doc.getFileName())		// file as attachment
+	//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + doc.getFileName())  // we are not rendering file at browser
+	//                .body(null);               // test with no file body
 	                .body(doc.getDocFile());
 	                
 	    }
-//	    
+/////////////////////////////////////////////////////
+	// Handling Show All Files Belonging to Current User     
+/////////////////////////////////////////////////////	    
+//Method 1:
+	    //Data model is tightly coupled with references
+//This was using our previous approach but we were obtaining User from SecurityContextHolder and
+//join was failing so we try another approach
+	    
+	   
 //	    @GetMapping("/getUserFiles")
 //	    public List<String> getAllFilesBelongingToLoggedInUser() {
 //	    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -107,6 +138,23 @@ public class UploadDownloadWithDBController {
 //			return fileRepository.getAllFilesBelongingToCurrentUser(userName);
 //	    }
 	    
+	    
+// Method 2:
+	    //Handle purely on the application side	no coupling with User Repository    
+//  Error with @ Query method trace error and debug temporarily disabled
+	    
+//	    @GetMapping("/getUserFiles")
+//	    public List<String> getAllFilesBelongingToLoggedInUser(@RequestParam("username") String username) {
+//  
+//	    	User user = userRepository.findByUserName(username);
+//	    	// Whether user exists in repository or not check logic
+//	    	if (user!=null) {
+//				return fileRepository.getAllFilesBelongingToCurrentUser(username);
+//			}else {
+//				throw new UsernameNotFoundException("User with given username does not exist:"+username);
+//			}
+//		
+//	    }
 	    
 	    
 }

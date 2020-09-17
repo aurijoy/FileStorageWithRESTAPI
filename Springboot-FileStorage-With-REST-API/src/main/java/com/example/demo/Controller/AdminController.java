@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.UserRepository;
+// Admin Controller in order to add Role Based Security
 
+// This has been set to AnyRole For Testing Purpose only
 @PreAuthorize("hasAnyRole")
 @RestController
 @RequestMapping("/Admin")

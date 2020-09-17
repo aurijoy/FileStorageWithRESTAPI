@@ -20,6 +20,9 @@ public interface FileDocumentRepository extends JpaRepository<FileDocument, Long
 	
 	public FileDocument findByFileName(String fileName);
 
+//	@Query ("SELECT f.fileName FROM FILEDOCUMENT f WHERE f.userName like %?1\"")
+//	public List<String> getAllFilesBelongingToCurrentUser(String username);
+
 //	@Query("SELECT com.example.demo.dto.FileViewResponse(f.fileName , u.user_id) FROM FILEDOCUMENT f JOIN f.user u ")
 //	public List<FileViewResponse> getAllFiles();
 //	

@@ -20,6 +20,8 @@ public class CustomUserDetailsService implements UserDetailsService{
 		User user = repository.findByUserName(username);
 		CustomUserDetails userDetails = new CustomUserDetails();
 		userDetails.setUser(user);
+
+		// Check logic allready handled by UserDetailService
 //		if (user!=null) {
 //			userDetails= new CustomUserDetails();
 //			userDetails.setUser(user);
@@ -28,6 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 //		}
 		
 		return userDetails;
+		
 	}
 	
 	
