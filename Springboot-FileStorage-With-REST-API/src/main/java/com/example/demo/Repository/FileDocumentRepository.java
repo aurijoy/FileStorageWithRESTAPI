@@ -19,25 +19,20 @@ public interface FileDocumentRepository extends JpaRepository<FileDocument, Long
 	
 	
 	public FileDocument findByFileName(String fileName);
-
+/////////////////////////////////////////////////////////
+//	Query Error resolving Issue
+////////////////////////////////////////////////////////
+	
+// new Approach with un-coupled Entities
 //	@Query ("SELECT f.fileName FROM FILEDOCUMENT f WHERE f.userName like %?1\"")
 //	public List<String> getAllFilesBelongingToCurrentUser(String username);
 
-//	@Query("SELECT com.example.demo.dto.FileViewResponse(f.fileName , u.user_id) FROM FILEDOCUMENT f JOIN f.user u ")
-//	public List<FileViewResponse> getAllFiles();
-//	
-//			
-//    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    if (principal instanceof UserDetails) {
-//      String username = ((UserDetails)principal).getUsername();
-//    } else {
-//      String username = principal.toString();
-//			
+// Old approach with tightly coupled entities
 //	@Query ("SELECT com.example.demo.dto.FileViewResponse(f.fileName , u.user_id) FROM FILEDOCUMENT f JOIN f.user u where u.userName like %?1\"")
 //	public List<FileViewResponse> findAllFilesBelongingToUserName (String userName) ;
 //	
 	
-	
+	// Old Approach with tightly coupled entities
 //	@Query ("SELECT (f.fileName) FROM FILEDOCUMENT f JOIN f.user u  WHERE u.userName like %?1\"")
 //	public ArrayList<String> getAllFilesBelongingToCurrentUser(String userName);
 
