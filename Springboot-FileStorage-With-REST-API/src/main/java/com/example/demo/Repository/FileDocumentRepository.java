@@ -19,13 +19,13 @@ public interface FileDocumentRepository extends JpaRepository<FileDocument, Long
 	
 	
 	public FileDocument findByFileName(String fileName);
-/////////////////////////////////////////////////////////
-//	Query Error resolving Issue
-////////////////////////////////////////////////////////
+
 	
 // new Approach with un-coupled Entities
-//	@Query ("SELECT f.fileName FROM FILEDOCUMENT f WHERE f.userName like %?1\"")
-//	public List<String> getAllFilesBelongingToCurrentUser(String username);
+//	
+
+	@Query ("SELECT f.fileName FROM FileDocument f WHERE f.username  = ?1")
+	public List<String> getAllFilesBelongingToCurrentUser(String username);
 
 // Old approach with tightly coupled entities
 //	@Query ("SELECT com.example.demo.dto.FileViewResponse(f.fileName , u.user_id) FROM FILEDOCUMENT f JOIN f.user u where u.userName like %?1\"")
@@ -36,5 +36,5 @@ public interface FileDocumentRepository extends JpaRepository<FileDocument, Long
 //	@Query ("SELECT (f.fileName) FROM FILEDOCUMENT f JOIN f.user u  WHERE u.userName like %?1\"")
 //	public ArrayList<String> getAllFilesBelongingToCurrentUser(String userName);
 
-	;
+
 }
