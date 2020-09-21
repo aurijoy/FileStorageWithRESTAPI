@@ -83,7 +83,7 @@ Key:'file' | Value:{file with properties described in application.properties}<Fi
 Please choose a user already present in the list
 
 ### Downloading File from a specific User's File set
-//download/{fileName} -> GetMapping
+]/download/{fileName} -> GetMapping
 {Authentication Disabled}
 For {fileName} please choose a file that already exists in the users file list.
 Please choose a file already present in the list
@@ -95,7 +95,7 @@ Please choose a file already present in the list
 
 1 Features
 
- 1.1  Seurity 
+ 1.1  Security 
 
 	The application uses basic Spring Security Based JPA authentication and Role based authorization. I have enbled WebSecurity configuration. 
 
