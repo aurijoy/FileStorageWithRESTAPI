@@ -89,6 +89,18 @@ public class User {
         return new ArrayList<>();
     }
 
+	public User(String userName, String password, String email, String roles) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.roles = roles;
+	}
+
+	public User() {
+		super();
+	}
+
 //	public Role getRoles() {
 //		return role;
 //	}

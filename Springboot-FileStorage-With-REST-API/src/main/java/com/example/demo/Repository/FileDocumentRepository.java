@@ -25,7 +25,7 @@ public interface FileDocumentRepository extends JpaRepository<FileDocument, Long
 //	
 
 	@Query ("SELECT f.fileName FROM FileDocument f WHERE f.username  = ?1")
-	public List<String> getAllFilesBelongingToCurrentUser(String username);
+	public ArrayList<String> getAllFilesBelongingToCurrentUser(String username);
 
 // Old approach with tightly coupled entities
 //	@Query ("SELECT com.example.demo.dto.FileViewResponse(f.fileName , u.user_id) FROM FILEDOCUMENT f JOIN f.user u where u.userName like %?1\"")

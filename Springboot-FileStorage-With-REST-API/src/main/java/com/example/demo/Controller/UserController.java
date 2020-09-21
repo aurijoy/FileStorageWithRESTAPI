@@ -41,7 +41,7 @@ public class UserController {
 	
 	//for the purpose of adding users to the database with User privilege strictly to be used for testing purpose
 	
-	@RequestMapping ("/user/blob")
+	@RequestMapping ("/user/login")
 	public String login() {
 		return "login successful";
 		

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,13 +72,22 @@ public class RESTUploadDownloadWithDBController {
 //        fileDocument.setUser(user);
         
         
+     
         
-  //      String username="defaultusername";   // hardcoding the username for training purpose only
-      
+// 		Check Logic 
+          User user = userRepository.findByUserName(usersuppliedusername);
+          if (user==null) {
+				throw new UsernameNotFoundException("User with given username does not exist:"+usersuppliedusername);
+          }
+				
+	
+			
+         
+        
+        
         String username= usersuppliedusername;  // getting username from Post request itself
         fileDocument.setUsername(username);		// finally preparing fileDocument
-        
-        
+           
         
         fileRepository.save(fileDocument);		// Pushing to Database
         
@@ -104,6 +114,7 @@ public class RESTUploadDownloadWithDBController {
 	 @GetMapping("/download/{fileName}")
 	    ResponseEntity<byte[]> downLoadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
 
+	    	// We have not written check logic yet
 	        FileDocument doc = fileRepository.findByFileName(fileName);
 
 	        String mimeType = request.getServletContext().getMimeType(doc.getFileName());
@@ -141,20 +152,20 @@ public class RESTUploadDownloadWithDBController {
 	    
 // Method 2:
 	    //Handle purely on the application side	no coupling with User Repository    
-//  Error with @ Query method trace error and debug temporarily disabled
+
 	    
-//	    @GetMapping("/getUserFiles")
-//	    public List<String> getAllFilesBelongingToLoggedInUser(@RequestParam("username") String username) {
-//  
-//	    	User user = userRepository.findByUserName(username);
-//	    	// Whether user exists in repository or not check logic
-//	    	if (user!=null) {
-//				return fileRepository.getAllFilesBelongingToCurrentUser(username);
-//			}else {
-//				throw new UsernameNotFoundException("User with given username does not exist:"+username);
-//			}
-//		
-//	    }
+	    @PostMapping("/getUserFiles")
+	    public ArrayList<String> getAllFilesBelongingToLoggedInUser(@RequestParam("username") String username) {
+  
+	    	User user = userRepository.findByUserName(username);
+	    	// Whether user exists in repository or not check logic
+	    	if (user!=null) {
+				return fileRepository.getAllFilesBelongingToCurrentUser(username);
+			}else {
+				throw new UsernameNotFoundException("User with given username does not exist:"+username);
+			}
+		
+	    }
 	    
 	    
 }

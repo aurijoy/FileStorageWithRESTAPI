@@ -1,3 +1,6 @@
+// This table is vestigial since we have decoupled users and roles and roles is stored as a string in the user table itself
+
+
 package com.example.demo.Entity;
 
 

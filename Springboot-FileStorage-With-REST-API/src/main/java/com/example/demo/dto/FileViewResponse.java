@@ -1,3 +1,5 @@
+// This DTO is vestigial after we changed approach only kept here for reference purposes
+
 package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
