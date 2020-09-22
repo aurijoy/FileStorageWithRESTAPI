@@ -1,5 +1,5 @@
 # FileStorageWithRESTAPI
-Simple File Storage Application with REST APIs using SpringBoot
+Simple File Storage Application with REST APIs using SpringBoot.
 
 
 
@@ -80,13 +80,13 @@ Please choose a user already present in the list
 please choose Form Data in Body and include parameter: 
 Key:'username' | Value:{already present username from Database}<Text>
 Key:'file' | Value:{file with properties described in application.properties}<File>
-Please choose a user already present in the list
+Please choose a user already present in the list.
 
 ### Downloading File from a specific User's File set
-]/download/{fileName} -> GetMapping
+/download/{fileName} -> GetMapping
 {Authentication Disabled}
 For {fileName} please choose a file that already exists in the users file list.
-Please choose a file already present in the list
+Please choose a file already present in the list we have not yet written custom exception handler.
 
 
 
@@ -138,7 +138,7 @@ Please choose a file already present in the list
 
   1.2.3.2 
 
-	For the second attempt we are going to change the design to accept username in the /upload Path so we cn use that to populate our database. This remove the constraint of acquiring
+	For the second attempt we are going to change the design to accept 'username' in the /upload Path so we cn use that to populate our database. This remove the constraint of acquiring
 	User information from User Detail Service.
 
 
@@ -171,9 +171,7 @@ Please choose a file already present in the list
 
  2.2 AdminPaths   
 
-	/admin** paths require authentication include
-
-	POSTMAPPING--> /admin/adduser  
+	/admin** paths have been nulled.
 
 
 
@@ -195,6 +193,9 @@ Please choose a file already present in the list
 	I also left availability for auto-creation of database
 
 	spring.datasource.url=jdbc:mysql://localhost:3306/demo?createDatabaseIfNotExist=true
+
+
+	Database is getting initialized through DBInit
 
 
  4.2 Hibernate configuration
@@ -225,12 +226,12 @@ I have written Multipart File properties as :
 	server.port=8081
 
  4.5
-	I have also enabled WebSecurity configuration for SpringSecurity 
+	I have also enabled WebSecurity configuration for SpringSecurity.
 
 
  5 Database
 
-	We have used MySQL as our Database for all our functionalities
+	We have used MySQL 8.0.13 as our Database for all our functionalities.
 
   5.1 Entites 
       User- Basic User Entity to interface with USerDetail
